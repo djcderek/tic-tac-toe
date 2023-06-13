@@ -1,0 +1,23 @@
+.container {
+    display: flex;
+    justify-content: center;
+    padding-top: 40px;
+}
+
+.game-board {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.square {
+    width: 100px;
+    height: 100px;
+    background-color: black;
+}
