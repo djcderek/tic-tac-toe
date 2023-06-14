@@ -4,17 +4,37 @@ const gameBoard = (() => {
     let currentPlayer = null
     let splicedArray = []
     let numRepArray = []
+    let winner = null
 
     const squares = document.querySelectorAll('.square')
     for (let i=0; i < squares.length; i++) {
         squares[i].addEventListener('click', () => {
-            console.log(`${squares[i].dataset.index} was clicked`)
             calculateCurrentTurn()
-            updateArray(currentPlayer, Number(squares[i].dataset.index))
-            displayArray()
-            createNumArray(currentPlayer)
-            checkIfWon(currentPlayer)
+            run(currentPlayer, Number(squares[i].dataset.index))
+            // calculateCurrentTurn()
+            // updateArray(currentPlayer, Number(squares[i].dataset.index))
+            // displayArray()
+            // createNumArray(currentPlayer)
+
+            // if (checkIfWon(currentPlayer)) {
+            //     for (let j=0; j < squares.length; j++) {
+            //         squares[j].classList.add('disable')
+            //     }
+            // }
         })
+    }
+
+    const run = (currentPlayer, position) => {
+        //calculateCurrentTurn()
+        updateArray(currentPlayer, position)
+        displayArray()
+        createNumArray(currentPlayer)
+
+        if (checkIfWon(currentPlayer)) {
+            for (let j=0; j < squares.length; j++) {
+                squares[j].classList.add('disable')
+            }
+        }
     }
 
     const createNumArray = (currentPlayer) => {
@@ -34,16 +54,27 @@ const gameBoard = (() => {
     const checkIfWon = (currentPlayer) => {
         let rowCounts = []
         let colCounts = []
+        let diagOne = [numRepArray[0][0], numRepArray[1][1], numRepArray[2][2]]
+        let diagTwo = [numRepArray[0][2], numRepArray[1][1], numRepArray[2][0]]
+
+        let diagCounts = [[diagOne.reduce((a, b) => a + b, 0)], [diagTwo.reduce((a,b) => a + b)]]
+        for (let i = 0; i < 2; i++) {
+            //console.log(diagCounts[i])
+            if (diagCounts[i] >= 3) {
+                console.log(`${currentPlayer.name} you won!`)
+                return true
+            }
+        }
+
         for (let i = 0; i < 3; i++) {
             rowCounts[i] = numRepArray[i].reduce((accumulator, currValue) => accumulator + currValue, 0)
             colCounts[i] = numRepArray[0][i] + numRepArray[1][i] + numRepArray[2][i]
-            console.log(rowCounts)
-            console.log(colCounts)
             if (rowCounts[i] >= 3 || colCounts[i] >= 3) {
                 console.log(`${currentPlayer.name} you won!`)
-                break
+                return true
             }
         }
+        return false
     }
 
     const displayArray = () => {
@@ -83,11 +114,12 @@ const gameBoard = (() => {
 
     return {
         addPlayer: addPlayer,
-        numRepArray: numRepArray
+        run: run,
+        numRepArray: numRepArray,
     }
 })()
 
-const personFactory = (name, playerType) => {
+const playerFactory = (name, playerType) => {
     let isWinner = false;
     let isTurn = null;
     let gameBoard = null
@@ -106,8 +138,16 @@ const personFactory = (name, playerType) => {
     }
 }
 
-const playerOne = personFactory('Derek', 'X')
-const playerTwo = personFactory('Zach', 'O')
+const computerPlayer = ((name) => {
+    const computer = playerFactory(name)
+
+    return {
+        computer
+    }
+})('AI')
+
+const playerOne = playerFactory('Derek', 'X')
+const playerTwo = playerFactory('Zach', 'O')
 
 gameBoard.addPlayer(playerOne)
 gameBoard.addPlayer(playerTwo)
