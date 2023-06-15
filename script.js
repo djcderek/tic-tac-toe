@@ -1,5 +1,5 @@
 const gameBoard = (() => {
-    let gameBoardArray = [];
+    let gameBoardArray = Array.apply(null, Array(9)).map(function () {});//[];
     let players = {};
     let currentPlayer = null
     let splicedArray = []
@@ -10,18 +10,28 @@ const gameBoard = (() => {
     for (let i=0; i < squares.length; i++) {
         squares[i].addEventListener('click', () => {
             calculateCurrentTurn()
-            run(currentPlayer, Number(squares[i].dataset.index))
-            // calculateCurrentTurn()
-            // updateArray(currentPlayer, Number(squares[i].dataset.index))
-            // displayArray()
-            // createNumArray(currentPlayer)
-
-            // if (checkIfWon(currentPlayer)) {
-            //     for (let j=0; j < squares.length; j++) {
-            //         squares[j].classList.add('disable')
-            //     }
-            // }
+            if (!currentPlayer.isAI) {
+                run(currentPlayer, Number(squares[i].dataset.index))
+                nudgeAI()
+            } else if (currentPlayer.isAI) {
+                for (player in players) {
+                    if (players[player].isAI) {
+                        let position = players[player].calculateMove(gameBoardArray)
+                        run(players[player], position)
+                    }
+                }
+            }
         })
+    }
+
+    const nudgeAI = () => {
+        if (winner != true) {
+            for (player in players) {
+                if (players[player].isAI) {
+                    players[player].simClick()
+                }
+            }
+        }
     }
 
     const run = (currentPlayer, position) => {
@@ -31,6 +41,7 @@ const gameBoard = (() => {
         createNumArray(currentPlayer)
 
         if (checkIfWon(currentPlayer)) {
+            winner = true
             for (let j=0; j < squares.length; j++) {
                 squares[j].classList.add('disable')
             }
@@ -59,7 +70,6 @@ const gameBoard = (() => {
 
         let diagCounts = [[diagOne.reduce((a, b) => a + b, 0)], [diagTwo.reduce((a,b) => a + b)]]
         for (let i = 0; i < 2; i++) {
-            //console.log(diagCounts[i])
             if (diagCounts[i] >= 3) {
                 console.log(`${currentPlayer.name} you won!`)
                 return true
@@ -116,11 +126,13 @@ const gameBoard = (() => {
         addPlayer: addPlayer,
         run: run,
         numRepArray: numRepArray,
+        gameBoardArray: gameBoardArray,
     }
 })()
 
 const playerFactory = (name, playerType) => {
     let isWinner = false;
+    let isAI = false;
     let isTurn = null;
     let gameBoard = null
 
@@ -134,21 +146,55 @@ const playerFactory = (name, playerType) => {
         name: name,
         isTurn: isTurn,
         playerType: playerType,
-        //gameBoard: gameBoard
+        isAI: isAI
     }
 }
 
-const computerPlayer = ((name) => {
+const computerPlayer = ((name, playerType) => {
     const computer = playerFactory(name)
+    computer.isAI = true
+    computer.playerType = playerType
+
+    const simClick = () => {
+        const squares = document.querySelectorAll('.square')
+        const singleSquare = squares[0].click()
+    }
+
+    const calculateMove = (gameBoardArray) => {
+        let validPositions = findValidPosition(gameBoardArray)
+        let randomIndex = Math.floor(Math.random()*validPositions.length)
+        let chosenPosition = validPositions[randomIndex]
+        console.log(chosenPosition)
+        return chosenPosition
+    }
+
+    const findValidPosition = (gameBoardArray) => {
+        let validPosition = []
+        console.log(gameBoardArray)
+        for (let i = 0; i < gameBoardArray.length; i++) {
+            if (gameBoardArray[i] === undefined) {
+                console.log('entered')
+                validPosition.push(i)
+            }
+        }
+        return validPosition
+    }
 
     return {
-        computer
+        name: computer.name,
+        isTurn: computer.isTurn,
+        playerType: computer.playerType,
+        isAI: computer.isAI,
+        calculateMove: calculateMove,
+        findValidPosition: findValidPosition,
+        simClick: simClick
     }
-})('AI')
+})('AI', 'O')
 
 const playerOne = playerFactory('Derek', 'X')
 const playerTwo = playerFactory('Zach', 'O')
 
 gameBoard.addPlayer(playerOne)
-gameBoard.addPlayer(playerTwo)
+gameBoard.addPlayer(computerPlayer)
+//gameBoard.addPlayer(playerTwo)
 
