@@ -1,7 +1,16 @@
+button {
+    text-decoration: none;
+    border: none;
+    padding: 16px;
+}
+
 .container {
     display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
     padding-top: 40px;
+    gap: 50px;
 }
 
 .game-board {
@@ -20,8 +29,23 @@
     width: 100px;
     height: 100px;
     background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 5rem;
 }
 
 .disable {
     pointer-events: none;
+}
+
+.add-player-container {
+    display: flex;
+    gap: 50px;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }

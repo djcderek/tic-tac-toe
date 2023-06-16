@@ -1,3 +1,19 @@
+const startBtn = (() => {
+    let state = {started: false}
+    const startBtn = document.querySelector('.start')
+    startBtn.addEventListener('click', () => {
+        if (Object.keys(gameBoard.players).length === 2) {
+            state.started = true
+            console.log(state.started)
+        } else {
+            alert('add players first')
+        }
+    })
+    return {
+        state: state
+    }
+})()
+
 const gameBoard = (() => {
     let gameBoardArray = Array.apply(null, Array(9)).map(function () {});//[];
     let players = {};
@@ -9,15 +25,17 @@ const gameBoard = (() => {
     const squares = document.querySelectorAll('.square')
     for (let i=0; i < squares.length; i++) {
         squares[i].addEventListener('click', () => {
-            calculateCurrentTurn()
-            if (!currentPlayer.isAI) {
-                run(currentPlayer, Number(squares[i].dataset.index))
-                nudgeAI()
-            } else if (currentPlayer.isAI) {
-                for (player in players) {
-                    if (players[player].isAI) {
-                        let position = players[player].calculateMove(gameBoardArray)
-                        run(players[player], position)
+            if (startBtn.state.started) {
+                calculateCurrentTurn()
+                if (!currentPlayer.isAI) {
+                    run(currentPlayer, Number(squares[i].dataset.index))
+                    nudgeAI()
+                } else if (currentPlayer.isAI) {
+                    for (player in players) {
+                        if (players[player].isAI) {
+                            let position = players[player].calculateMove(gameBoardArray)
+                            run(players[player], position)
+                        }
                     }
                 }
             }
@@ -125,6 +143,7 @@ const gameBoard = (() => {
     return {
         addPlayer: addPlayer,
         run: run,
+        players: players,
         numRepArray: numRepArray,
         gameBoardArray: gameBoardArray,
     }
@@ -191,10 +210,60 @@ const computerPlayer = ((name, playerType) => {
     }
 })('AI', 'O')
 
-const playerOne = playerFactory('Derek', 'X')
-const playerTwo = playerFactory('Zach', 'O')
+const createPlayer = (() => {
+    const formContainerOne = document.querySelector('.form-container.one')
+    const formContainerTwo = document.querySelector('.form-container.two')
 
-gameBoard.addPlayer(playerOne)
-gameBoard.addPlayer(computerPlayer)
+    const send = (formContainer) => {
+        const selector = "[name='name" + formContainer.classList[1] + "']"
+        console.log(selector)
+        const playerName = document.querySelector(selector).value
+        const playerType = formContainer.id
+        let player = playerFactory(playerName, playerType)
+        gameBoard.addPlayer(player)
+        console.log(player)
+        event.preventDefault()
+    }
+
+    const playerOneBtn = document.querySelector('.player-one')
+    playerOneBtn.addEventListener('click', () => {
+        console.log('entered')
+        onClickAction(formContainerOne)
+    })
+
+    const playerTwoBtn = document.querySelector('.player-two')
+    playerTwoBtn.addEventListener('click', () => {
+        console.log('entered')
+        onClickAction(formContainerTwo)
+    })
+    const onClickAction = (formContainer) => {
+        //const id = formContainer.id
+        const nameSelector = 'name' + formContainer.classList[1]
+        console.log(nameSelector)
+        const form = document.createElement('form')
+        const name = document.createElement('input')
+        name.setAttribute('type', 'text')
+        name.setAttribute('name', nameSelector)
+        name.setAttribute('placeholder', 'name')
+    
+        const submit = document.createElement('input')
+        submit.setAttribute('type', 'submit')
+        submit.addEventListener('click', () => {
+            send(formContainer)//send(id)
+        })
+    
+        form.appendChild(name)
+        form.appendChild(submit)
+
+        formContainer.appendChild(form)
+    }
+})()
+
+
+//const playerOne = playerFactory('Derek', 'X')
+//const playerTwo = playerFactory('Zach', 'O')
+
+//gameBoard.addPlayer(playerOne)
+//gameBoard.addPlayer(computerPlayer)
 //gameBoard.addPlayer(playerTwo)
 
