@@ -4,7 +4,7 @@ const startBtn = (() => {
     startBtn.addEventListener('click', () => {
         if (Object.keys(gameBoard.players).length === 2) {
             state.started = true
-            console.log(state.started)
+            //console.log(state.started)
         } else {
             alert('add players first')
         }
@@ -28,7 +28,7 @@ const gameBoard = (() => {
             if (startBtn.state.started) {
                 calculateCurrentTurn()
                 if (!currentPlayer.isAI) {
-                    console.log(gameBoardArray)
+                    //console.log(gameBoardArray)
                     run(currentPlayer, Number(squares[i].dataset.index))
                     nudgeAI()
                 } else if (currentPlayer.isAI) {
@@ -64,10 +64,12 @@ const gameBoard = (() => {
 
         if (checkIfWon(currentPlayer)) {
             winner = true
-            displayWin.displayWinner(winner, currentPlayer)
+            displayWin.displayWinner(winner, false, currentPlayer)
             for (let j=0; j < squares.length; j++) {
                 squares[j].classList.toggle('disable')
             }
+        } else if (checkIfDraw()) {
+            displayWin.displayWinner(winner, true, currentPlayer)
         }
     }
 
@@ -108,6 +110,14 @@ const gameBoard = (() => {
             }
         }
         return false
+    }
+
+    const checkIfDraw = () => {
+        if (!gameBoardArray.includes(undefined)) {
+            console.log(gameBoardArray)
+            console.log('is draw')
+            return true
+        }
     }
 
     const displayArray = () => {
@@ -201,16 +211,16 @@ const computerPlayer = ((name, playerType) => {
         let validPositions = findValidPosition(gameBoardArray)
         let randomIndex = Math.floor(Math.random()*validPositions.length)
         let chosenPosition = validPositions[randomIndex]
-        console.log(chosenPosition)
+        //console.log(chosenPosition)
         return chosenPosition
     }
 
     const findValidPosition = (gameBoardArray) => {
         let validPosition = []
-        console.log(gameBoardArray)
+        //console.log(gameBoardArray)
         for (let i = 0; i < gameBoardArray.length; i++) {
             if (gameBoardArray[i] === undefined) {
-                console.log('entered')
+                //console.log('entered')
                 validPosition.push(i)
             }
         }
@@ -245,7 +255,7 @@ const createPlayer = (() => {
             let player = playerFactory(playerName, playerType)
             
             gameBoard.addPlayer(player)
-            console.log(player)
+            //console.log(player)
             form.classList.toggle('invisible')
             event.preventDefault()
         }
@@ -253,19 +263,19 @@ const createPlayer = (() => {
 
     const playerOneBtn = document.querySelector('.player-one')
     playerOneBtn.addEventListener('click', () => {
-        console.log('entered')
+        //console.log('entered')
         onClickAction(formContainerOne)
     })
 
     const playerTwoBtn = document.querySelector('.player-two')
     playerTwoBtn.addEventListener('click', () => {
-        console.log('entered')
+        //console.log('entered')
         onClickAction(formContainerTwo)
     })
     const onClickAction = (formContainer) => {
         //const id = formContainer.id
         const nameSelector = 'name' + formContainer.classList[1]
-        console.log(nameSelector)
+        //console.log(nameSelector)
         const form = document.createElement('form')
         const name = document.createElement('input')
         name.setAttribute('type', 'text')
@@ -292,11 +302,15 @@ const createPlayer = (() => {
 const displayWin = (() => {
     const win = document.querySelector('.win')
 
-    const displayWinner = (isWin, currentPlayer) => {
+    const displayWinner = (isWin, isDraw, currentPlayer) => {
         if (isWin) {
             win.textContent = `${currentPlayer.name} won!`
         } else {
             win.textContent = ''
+        }
+
+        if(isDraw) {
+            win.textContent = `It's a tie!`
         }
     }
 
@@ -316,17 +330,17 @@ const resetBtn = (() => {
 
         if (gameBoard.winner === true) {
             for (let j=0; j < squares.length; j++) {
-                console.log('entered disable')
+                //console.log('entered disable')
                 squares[j].classList.toggle('disable')
             }
             gameBoard.winner = false
         }
 
         if (gameBoard.winner === false) {
-            console.log(`winner is ${gameBoard.winner}`)
-            displayWin.displayWinner(gameBoard.winner, {})
+            //console.log(`winner is ${gameBoard.winner}`)
+            displayWin.displayWinner(gameBoard.winner, false, {})
         }
-        
+
         gameBoard.numRepArray.length = 0
         gameBoard.splicedArray.length = 0
 
