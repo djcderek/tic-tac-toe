@@ -55,6 +55,9 @@ const gameBoard = (() => {
 
     const run = (currentPlayer, position) => {
         //calculateCurrentTurn()
+        // if (winner === false) {
+        //     displayWin.displayWinner(winner, currentPlayer)
+        // }
         updateArray(currentPlayer, position)
         displayArray()
         createNumArray(currentPlayer)
@@ -292,6 +295,8 @@ const displayWin = (() => {
     const displayWinner = (isWin, currentPlayer) => {
         if (isWin) {
             win.textContent = `${currentPlayer.name} won!`
+        } else {
+            win.textContent = ''
         }
     }
 
@@ -316,6 +321,12 @@ const resetBtn = (() => {
             }
             gameBoard.winner = false
         }
+
+        if (gameBoard.winner === false) {
+            console.log(`winner is ${gameBoard.winner}`)
+            displayWin.displayWinner(gameBoard.winner, {})
+        }
+        
         gameBoard.numRepArray.length = 0
         gameBoard.splicedArray.length = 0
 
