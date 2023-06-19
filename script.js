@@ -28,6 +28,7 @@ const gameBoard = (() => {
             if (startBtn.state.started) {
                 calculateCurrentTurn()
                 if (!currentPlayer.isAI) {
+                    console.log(gameBoardArray)
                     run(currentPlayer, Number(squares[i].dataset.index))
                     nudgeAI()
                 } else if (currentPlayer.isAI) {
@@ -62,7 +63,7 @@ const gameBoard = (() => {
             winner = true
             displayWin.displayWinner(winner, currentPlayer)
             for (let j=0; j < squares.length; j++) {
-                squares[j].classList.add('disable')
+                squares[j].classList.toggle('disable')
             }
         }
     }
@@ -144,10 +145,22 @@ const gameBoard = (() => {
     return {
         addPlayer: addPlayer,
         run: run,
+        displayArray: displayArray,
+        updatePlayerTurn: updatePlayerTurn,
+        //setWinner: setWinner,
+
+        set winner (value) {
+            winner = value
+        },
+
+        get winner () {
+            return winner
+        },
+
         players: players,
         numRepArray: numRepArray,
         gameBoardArray: gameBoardArray,
-        winner: winner
+        splicedArray: splicedArray,
     }
 })()
 
@@ -273,6 +286,35 @@ const displayWin = (() => {
     return {
         displayWinner: displayWinner
     }
+})()
+
+const resetBtn = (() => {
+    const reset = document.querySelector('.reset')
+
+    reset.addEventListener('click', () => {
+        const squares = document.querySelectorAll('.square')
+        for (let i = 0; i < gameBoard.gameBoardArray.length; i++) {
+            gameBoard.gameBoardArray[i] = undefined
+        }
+
+        if (gameBoard.winner === true) {
+            for (let j=0; j < squares.length; j++) {
+                console.log('entered disable')
+                squares[j].classList.toggle('disable')
+            }
+            gameBoard.winner = false
+        }
+        gameBoard.numRepArray.length = 0
+        gameBoard.splicedArray.length = 0
+
+        gameBoard.updatePlayerTurn()
+
+        for (let i=0; i < squares.length; i++) {
+            squares[i].textContent = ''
+            squares[i].style.color = 'white';
+        }
+
+    })
 })()
 
 //const playerOne = playerFactory('Derek', 'X')
