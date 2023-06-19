@@ -307,7 +307,13 @@ const resetBtn = (() => {
         gameBoard.numRepArray.length = 0
         gameBoard.splicedArray.length = 0
 
-        gameBoard.updatePlayerTurn()
+        for (player in gameBoard.players) {
+            console.log(gameBoard.players[player])
+            if (gameBoard.players[player].playerType === 'X' && gameBoard.players[player].isTurn === false) {
+                console.log('entered update')
+                gameBoard.updatePlayerTurn()
+            }
+        }
 
         for (let i=0; i < squares.length; i++) {
             squares[i].textContent = ''
