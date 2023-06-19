@@ -229,15 +229,23 @@ const createPlayer = (() => {
     const formContainerOne = document.querySelector('.form-container.one')
     const formContainerTwo = document.querySelector('.form-container.two')
 
-    const send = (formContainer) => {
+    const send = (formContainer, form) => {
         const selector = "[name='name" + formContainer.classList[1] + "']"
-        console.log(selector)
-        const playerName = document.querySelector(selector).value
-        const playerType = formContainer.id
-        let player = playerFactory(playerName, playerType)
-        gameBoard.addPlayer(player)
-        console.log(player)
-        event.preventDefault()
+
+        if (form.checkValidity()) {
+            const playerName = document.querySelector(selector).value
+            const playerType = formContainer.id
+    
+            const playerBtn = formContainer.querySelector('button')
+            playerBtn.textContent = playerName
+    
+            let player = playerFactory(playerName, playerType)
+            
+            gameBoard.addPlayer(player)
+            console.log(player)
+            form.classList.toggle('invisible')
+            event.preventDefault()
+        }
     }
 
     const playerOneBtn = document.querySelector('.player-one')
@@ -260,17 +268,21 @@ const createPlayer = (() => {
         name.setAttribute('type', 'text')
         name.setAttribute('name', nameSelector)
         name.setAttribute('placeholder', 'name')
+        name.required = true
     
         const submit = document.createElement('input')
         submit.setAttribute('type', 'submit')
         submit.addEventListener('click', () => {
-            send(formContainer)//send(id)
+            send(formContainer, form)//send(id)
         })
     
         form.appendChild(name)
         form.appendChild(submit)
 
         formContainer.appendChild(form)
+
+        const playerBtn = formContainer.querySelector('button')
+        playerBtn.classList.toggle('disable')
     }
 })()
 

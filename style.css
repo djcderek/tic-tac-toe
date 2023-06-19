@@ -49,3 +49,7 @@ button {
     flex-direction: column;
     gap: 10px;
 }
+
+.invisible {
+    display: none;
+}
