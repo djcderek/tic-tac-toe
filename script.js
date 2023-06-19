@@ -60,6 +60,7 @@ const gameBoard = (() => {
 
         if (checkIfWon(currentPlayer)) {
             winner = true
+            displayWin.displayWinner(winner, currentPlayer)
             for (let j=0; j < squares.length; j++) {
                 squares[j].classList.add('disable')
             }
@@ -146,6 +147,7 @@ const gameBoard = (() => {
         players: players,
         numRepArray: numRepArray,
         gameBoardArray: gameBoardArray,
+        winner: winner
     }
 })()
 
@@ -259,6 +261,19 @@ const createPlayer = (() => {
     }
 })()
 
+const displayWin = (() => {
+    const win = document.querySelector('.win')
+
+    const displayWinner = (isWin, currentPlayer) => {
+        if (isWin) {
+            win.textContent = `${currentPlayer.name} won!`
+        }
+    }
+
+    return {
+        displayWinner: displayWinner
+    }
+})()
 
 //const playerOne = playerFactory('Derek', 'X')
 //const playerTwo = playerFactory('Zach', 'O')
