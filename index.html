@@ -8,37 +8,45 @@
 </head>
 <body>
     <div class="container">
+        <div class="title">TIC TAC TOE</div>
         <div class="win"></div>
-        <div class="game-board">
-            <div class="row">
-                <div class="square" data-index="0"></div>
-                <div class="square" data-index="1"></div>
-                <div class="square" data-index="2"></div>
-            </div>
-            <div class="row">
-                <div class="square" data-index="3"></div>
-                <div class="square" data-index="4"></div>
-                <div class="square" data-index="5"></div>
-            </div>
-            <div class="row">
-                <div class="square" data-index="6"></div>
-                <div class="square" data-index="7"></div>
-                <div class="square" data-index="8"></div>
-            </div>
-        </div>
-        <div class="add-player-container">
+
+        <div class="content">
             <div class="form-container one" id="X">
+                <div class="type">X</div>
                 <button class="player-one">Add Player One</button>
             </div>
+    
+            <div class="game-board invisible">
+                <div class="row">
+                    <div class="square" data-index="0"></div>
+                    <div class="square" data-index="1"></div>
+                    <div class="square" data-index="2"></div>
+                </div>
+                <div class="row">
+                    <div class="square" data-index="3"></div>
+                    <div class="square" data-index="4"></div>
+                    <div class="square" data-index="5"></div>
+                </div>
+                <div class="row">
+                    <div class="square" data-index="6"></div>
+                    <div class="square" data-index="7"></div>
+                    <div class="square" data-index="8"></div>
+                </div>
+            </div>            
             <div class="form-container two" id="O">
-                <button class="player-two">Add Player Two</button>
-            </div>
-            <div class="ai-button">
-                <button class="ai">Add ai</button>
+                <div class="type">O</div>
+                <div class="second-btn-set">
+                    <button class="player-two">Add Player Two</button>
+                    <div class="ai-button">
+                    <button class="ai">Add ai</button>
+                </div>
+                </div>
             </div>
         </div>
+
         <div>
-            <button class="start">Start</button>
+            <button class="start invisible">Start</button>
             <button class="reset">Reset</button>
         </div>
     </div>

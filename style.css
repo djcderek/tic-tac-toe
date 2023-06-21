@@ -13,6 +13,11 @@ button {
     gap: 50px;
 }
 
+.content {
+    display: flex;
+    gap: 30px;
+}
+
 .game-board {
     display: flex;
     flex-direction: column;
@@ -47,7 +52,68 @@ button {
 .form-container {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    width: 300px;
+    height: 300px;
+}
+
+.second-btn-set {
+    display: flex;
+    gap: 3px;
+}
+
+.type {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    height: 200px;
+    background-color: black;
+    color: white;
+    font-size: 5rem;
+
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.player-one {
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+
+    background-color: rgb(118, 118, 118);
+    color: white;
+
+    height: 75px;
+}
+
+.player-two {
+    border-bottom-left-radius: 10px;
+    height: 75px;
+    width: 300px;
+}
+
+.ai {
+    border-bottom-right-radius: 10px;
+    width: 150px;
+    height: 75px;
+}
+
+.form {
+    background-color: rgb(118, 118, 118);
+    display: flex;
+    padding: 20px;
+    height: 35px;
+
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.form-entry {
+    border: none;
+}
+
+.submit {
+    border: none;
+    text-decoration: none;
 }
 
 .invisible {

@@ -1,16 +1,19 @@
 const startBtn = (() => {
     let state = {started: false}
-    const startBtn = document.querySelector('.start')
-    startBtn.addEventListener('click', () => {
+    const gameBoardDom = document.querySelector('.game-board')
+
+    const startBtnDom = document.querySelector('.start')
+    startBtnDom.addEventListener('click', () => {
         if (Object.keys(gameBoard.players).length === 2) {
             state.started = true
-            //console.log(state.started)
+            gameBoardDom.classList.toggle('invisible')
         } else {
             alert('add players first')
         }
     })
     return {
-        state: state
+        state: state,
+        startBtnDom: startBtnDom
     }
 })()
 
@@ -158,7 +161,6 @@ const gameBoard = (() => {
         updatePlayerTurn: updatePlayerTurn,
         createNumArray: createNumArray,
         checkIfWon: checkIfWon,
-        //setWinner: setWinner,
 
         set winner (value) {
             winner = value
@@ -219,12 +221,10 @@ const computerPlayer = ((name, playerType) => {
         let bestMove = 0
         for (let i = 0; i < gameBoardArray.length; i++) {
             if (gameBoardArray[i] === undefined) {
-                //console.log(`entered ${i}`)
                 let currentMove = i
                 let currentBoard = gameBoardArray.slice()
                 currentBoard[i] = 'O'
                 let currentScore = minimax(currentBoard, 0, false)
-                //console.log(currentBoard)
                 if (currentScore > bestScore) {
                     bestMove = currentMove
                     bestScore = currentScore
@@ -278,8 +278,6 @@ const computerPlayer = ((name, playerType) => {
             || (board[2] == 'O' && board[5] == 'O' && board[8] == 'O')
             || (board[0] == 'O' && board[4] == 'O' && board[8] == 'O')
             || (board[2] == 'O' && board[4] == 'O' && board[6] == 'O')) {
-            //console.log(board)
-            //console.log(10)
             return 10
         } else if ((board[0] == 'X' && board[1] == 'X' && board[2] == 'X')
             || (board[3] == 'X' && board[4] == 'X' && board[5] == 'X')
@@ -289,8 +287,6 @@ const computerPlayer = ((name, playerType) => {
             || (board[2] == 'X' && board[5] == 'X' && board[8] == 'X')
             || (board[0] == 'X' && board[4] == 'X' && board[8] == 'X')
             || (board[2] == 'X' && board[4] == 'X' && board[6] == 'X')) {
-            //console.log(board)
-            //console.log(-10)
             return -10
         } else {
             return 0
@@ -339,45 +335,62 @@ const createPlayer = (() => {
             gameBoard.addPlayer(player)
             //console.log(player)
             form.classList.toggle('invisible')
+            playerBtn.classList.toggle('invisible')
+            checkPlayerCount()
             event.preventDefault()
         }
     }
 
     const playerOneBtn = document.querySelector('.player-one')
     playerOneBtn.addEventListener('click', () => {
-        //console.log('entered')
         onClickAction(formContainerOne)
     })
 
     const playerTwoBtn = document.querySelector('.player-two')
     playerTwoBtn.addEventListener('click', () => {
-        //console.log('entered')
         onClickAction(formContainerTwo)
     })
     const onClickAction = (formContainer) => {
-        //const id = formContainer.id
         const nameSelector = 'name' + formContainer.classList[1]
-        //console.log(nameSelector)
         const form = document.createElement('form')
         const name = document.createElement('input')
         name.setAttribute('type', 'text')
         name.setAttribute('name', nameSelector)
         name.setAttribute('placeholder', 'name')
         name.required = true
+        name.classList.add('.form-entry')
     
         const submit = document.createElement('input')
         submit.setAttribute('type', 'submit')
         submit.addEventListener('click', () => {
             send(formContainer, form)//send(id)
         })
+        submit.classList.add('submit')
     
         form.appendChild(name)
         form.appendChild(submit)
+        form.classList.add('form')
 
         formContainer.appendChild(form)
 
         const playerBtn = formContainer.querySelector('button')
         playerBtn.classList.toggle('disable')
+        playerBtn.classList.toggle('invisible')
+
+        if (formContainer.classList[1] === 'two') {
+            const ai = document.querySelector('.ai')
+            ai.classList.toggle('invisible')
+        }
+    }
+
+    const checkPlayerCount = () => {
+        if (Object.keys(gameBoard.players).length === 2) {
+            startBtn.startBtnDom.classList.toggle('invisible')
+        }
+    }
+
+    return {
+        checkPlayerCount: checkPlayerCount
     }
 })()
 
@@ -385,6 +398,8 @@ const createAI = (() => {
     const aiButton = document.querySelector('.ai')
     aiButton.addEventListener('click', () => {
         gameBoard.addPlayer(computerPlayer)
+
+        createPlayer.checkPlayerCount()
     })
 })()
 
@@ -419,14 +434,12 @@ const resetBtn = (() => {
 
         if (gameBoard.winner === true) {
             for (let j=0; j < squares.length; j++) {
-                //console.log('entered disable')
                 squares[j].classList.toggle('disable')
             }
             gameBoard.winner = false
         }
 
         if (gameBoard.winner === false) {
-            //console.log(`winner is ${gameBoard.winner}`)
             displayWin.displayWinner(gameBoard.winner, false, {})
         }
 
@@ -448,11 +461,4 @@ const resetBtn = (() => {
 
     })
 })()
-
-//const playerOne = playerFactory('Derek', 'X')
-//const playerTwo = playerFactory('Zach', 'O')
-
-//gameBoard.addPlayer(playerOne)
-//gameBoard.addPlayer(computerPlayer)
-//gameBoard.addPlayer(playerTwo)
 
