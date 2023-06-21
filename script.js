@@ -54,10 +54,6 @@ const gameBoard = (() => {
     }
 
     const run = (currentPlayer, position) => {
-        //calculateCurrentTurn()
-        // if (winner === false) {
-        //     displayWin.displayWinner(winner, currentPlayer)
-        // }
         updateArray(currentPlayer, position)
         displayArray()
         createNumArray(currentPlayer)
@@ -96,7 +92,7 @@ const gameBoard = (() => {
         let diagCounts = [[diagOne.reduce((a, b) => a + b, 0)], [diagTwo.reduce((a,b) => a + b)]]
         for (let i = 0; i < 2; i++) {
             if (diagCounts[i] >= 3) {
-                console.log(`${currentPlayer.name} you won!`)
+                //console.log(`${currentPlayer.name} you won!`)
                 return true
             }
         }
@@ -105,7 +101,7 @@ const gameBoard = (() => {
             rowCounts[i] = numRepArray[i].reduce((accumulator, currValue) => accumulator + currValue, 0)
             colCounts[i] = numRepArray[0][i] + numRepArray[1][i] + numRepArray[2][i]
             if (rowCounts[i] >= 3 || colCounts[i] >= 3) {
-                console.log(`${currentPlayer.name} you won!`)
+                //console.log(`${currentPlayer.name} you won!`)
                 return true
             }
         }
@@ -160,6 +156,8 @@ const gameBoard = (() => {
         run: run,
         displayArray: displayArray,
         updatePlayerTurn: updatePlayerTurn,
+        createNumArray: createNumArray,
+        checkIfWon: checkIfWon,
         //setWinner: setWinner,
 
         set winner (value) {
@@ -211,8 +209,92 @@ const computerPlayer = ((name, playerType) => {
         let validPositions = findValidPosition(gameBoardArray)
         let randomIndex = Math.floor(Math.random()*validPositions.length)
         let chosenPosition = validPositions[randomIndex]
-        //console.log(chosenPosition)
+
+        chosenPosition = findBestMove(gameBoardArray)
         return chosenPosition
+    }
+
+    const findBestMove = (gameBoardArray) => {
+        let bestScore = -1000
+        let bestMove = 0
+        for (let i = 0; i < gameBoardArray.length; i++) {
+            if (gameBoardArray[i] === undefined) {
+                //console.log(`entered ${i}`)
+                let currentMove = i
+                let currentBoard = gameBoardArray.slice()
+                currentBoard[i] = 'O'
+                let currentScore = minimax(currentBoard, 0, false)
+                //console.log(currentBoard)
+                if (currentScore > bestScore) {
+                    bestMove = currentMove
+                    bestScore = currentScore
+                }
+                currentBoard[i] = undefined
+            }
+        }
+        console.log(bestScore)
+        return bestMove
+    }
+
+    const minimax = (board, depth, isMax) => {
+        let score = eval(board)
+        if (score === 10) {
+            return score
+        } else if (score === -10) {
+            return score
+        } else if (!board.includes(undefined)) {
+            return 0
+        }
+
+        if (isMax) {
+            let max = -1000
+            for (let i = 0; i < board.length; i++) {
+                if (board[i] === undefined) {
+                    board[i] = 'O'
+                    max = Math.max(minimax(board, depth + 1, !isMax), max)
+                    board[i] = undefined
+                }
+            }
+            return max
+        } else {
+            let min = 1000
+            for (let i = 0; i < board.length; i++) {
+                if (board[i] === undefined) {
+                    board[i] = 'X'
+                    min = Math.min(minimax(board, depth + 1, !isMax), min)
+                    board[i] = undefined
+                }
+            }
+            return min
+        }
+    }
+
+    const eval = (board) => {
+        if ((board[0] == 'O' && board[1] == 'O' && board[2] == 'O')
+            || (board[3] == 'O' && board[4] == 'O' && board[5] == 'O')
+            || (board[6] == 'O' && board[7] == 'O' && board[8] == 'O')
+            || (board[0] == 'O' && board[3] == 'O' && board[6] == 'O')
+            || (board[1] == 'O' && board[4] == 'O' && board[7] == 'O')
+            || (board[2] == 'O' && board[5] == 'O' && board[8] == 'O')
+            || (board[0] == 'O' && board[4] == 'O' && board[8] == 'O')
+            || (board[2] == 'O' && board[4] == 'O' && board[6] == 'O')) {
+            //console.log(board)
+            //console.log(10)
+            return 10
+        } else if ((board[0] == 'X' && board[1] == 'X' && board[2] == 'X')
+            || (board[3] == 'X' && board[4] == 'X' && board[5] == 'X')
+            || (board[6] == 'X' && board[7] == 'X' && board[8] == 'X')
+            || (board[0] == 'X' && board[3] == 'X' && board[6] == 'X')
+            || (board[1] == 'X' && board[4] == 'X' && board[7] == 'X')
+            || (board[2] == 'X' && board[5] == 'X' && board[8] == 'X')
+            || (board[0] == 'X' && board[4] == 'X' && board[8] == 'X')
+            || (board[2] == 'X' && board[4] == 'X' && board[6] == 'X')) {
+            //console.log(board)
+            //console.log(-10)
+            return -10
+        } else {
+            return 0
+        }
     }
 
     const findValidPosition = (gameBoardArray) => {
@@ -297,6 +379,13 @@ const createPlayer = (() => {
         const playerBtn = formContainer.querySelector('button')
         playerBtn.classList.toggle('disable')
     }
+})()
+
+const createAI = (() => {
+    const aiButton = document.querySelector('.ai')
+    aiButton.addEventListener('click', () => {
+        gameBoard.addPlayer(computerPlayer)
+    })
 })()
 
 const displayWin = (() => {
