@@ -393,6 +393,10 @@ const createPlayer = (() => {
         playerBtn.classList.toggle('disable')
         playerBtn.classList.toggle('invisible')
 
+        if (playerBtn.classList[0] === 'player-two') {
+            playerBtn.classList.toggle('border-rad-right')
+        }
+
         if (formContainer.classList[1] === 'two') {
             const ai = document.querySelector('.ai')
             ai.classList.toggle('invisible')
@@ -417,6 +421,7 @@ const createAI = (() => {
         gameBoard.addPlayer(computerPlayer)
         playerBtn.classList.toggle('invisible')
         aiButton.classList.toggle('disable')
+        aiButton.classList.toggle('border-rad-left')
         createPlayer.checkPlayerCount()
     })
 })()
