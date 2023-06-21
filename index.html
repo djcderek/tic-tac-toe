@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tic Tac Toe</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Arvo:wght@400;700&family=Chakra+Petch:wght@400;700&family=Monoton&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
@@ -16,8 +19,10 @@
                 <div class="type">X</div>
                 <button class="player-one">Add Player One</button>
             </div>
-    
-            <div class="game-board invisible">
+
+            <div class="vs">VS</div>
+        
+            <div class="game-board invisible preGameBoard">
                 <div class="row">
                     <div class="square" data-index="0"></div>
                     <div class="square" data-index="1"></div>
@@ -34,20 +39,21 @@
                     <div class="square" data-index="8"></div>
                 </div>
             </div>            
+            
             <div class="form-container two" id="O">
                 <div class="type">O</div>
                 <div class="second-btn-set">
                     <button class="player-two">Add Player Two</button>
-                    <div class="ai-button">
-                    <button class="ai">Add ai</button>
-                </div>
+                    <!-- <div class="ai-button"> -->
+                        <button class="ai">AI</button>
+                    <!-- </div> -->
                 </div>
             </div>
         </div>
 
         <div>
-            <button class="start invisible">Start</button>
-            <button class="reset">Reset</button>
+            <button class="start invisible">START</button>
+            <button class="reset invisible">RESET</button>
         </div>
     </div>
     <script src="script.js"></script>

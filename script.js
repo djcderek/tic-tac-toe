@@ -1,12 +1,26 @@
 const startBtn = (() => {
     let state = {started: false}
     const gameBoardDom = document.querySelector('.game-board')
-
     const startBtnDom = document.querySelector('.start')
+    const vs = document.querySelector('.vs')
+    const cardType = document.querySelectorAll('.type')
+    const playerOne = document.querySelector('.player-one')
+    const playerTwo = document.querySelector('.player-two')
     startBtnDom.addEventListener('click', () => {
         if (Object.keys(gameBoard.players).length === 2) {
             state.started = true
             gameBoardDom.classList.toggle('invisible')
+            // gameBoard.squares.forEach(square => {
+            //     //square.classList.toggle('preSquares')
+            //     square.classList.toggle('square-dim')
+            // })
+            startBtnDom.classList.toggle('disable')
+            startBtnDom.classList.toggle('invisible')
+            resetBtn.reset.classList.toggle('invisible')
+            vs.classList.toggle('invisible')
+            cardType.forEach(card => card.classList.toggle('close'))
+            playerOne.classList.toggle('border-rad')
+            playerTwo.classList.toggle('border-rad')
         } else {
             alert('add players first')
         }
@@ -174,6 +188,7 @@ const gameBoard = (() => {
         numRepArray: numRepArray,
         gameBoardArray: gameBoardArray,
         splicedArray: splicedArray,
+        squares: squares
     }
 })()
 
@@ -358,13 +373,14 @@ const createPlayer = (() => {
         name.setAttribute('name', nameSelector)
         name.setAttribute('placeholder', 'name')
         name.required = true
-        name.classList.add('.form-entry')
+        name.classList.add('form-entry')
     
         const submit = document.createElement('input')
         submit.setAttribute('type', 'submit')
         submit.addEventListener('click', () => {
             send(formContainer, form)//send(id)
         })
+        submit.value = 'Add'
         submit.classList.add('submit')
     
         form.appendChild(name)
@@ -396,9 +412,11 @@ const createPlayer = (() => {
 
 const createAI = (() => {
     const aiButton = document.querySelector('.ai')
+    const playerBtn = document.querySelector('.player-two')
     aiButton.addEventListener('click', () => {
         gameBoard.addPlayer(computerPlayer)
-
+        playerBtn.classList.toggle('invisible')
+        aiButton.classList.toggle('disable')
         createPlayer.checkPlayerCount()
     })
 })()
@@ -460,5 +478,9 @@ const resetBtn = (() => {
         }
 
     })
+    
+    return {
+        reset
+    }
 })()
 

@@ -1,4 +1,5 @@
 button {
+    font-family: 'Chakra Petch', sans-serif;
     text-decoration: none;
     border: none;
     padding: 16px;
@@ -15,7 +16,18 @@ button {
 
 .content {
     display: flex;
+    align-items: center;
     gap: 30px;
+}
+
+.title {
+    font-family: 'Arvo', serif;
+    font-size: 3rem;
+}
+
+.win {
+    font-family: 'Arvo', serif;
+    font-size: 3rem;
 }
 
 .game-board {
@@ -30,15 +42,33 @@ button {
     gap: 10px;
 }
 
+.vs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3rem;
+
+    font-family: 'Arvo', serif;
+}
+
 .square {
-    width: 100px;
-    height: 100px;
+    height: 130px;
+    width: 130px;
     background-color: black;
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 5rem;
+    border-radius: 15px;
+
+    font-family: 'Monoton', cursive;
 }
+
+/* .square-dim {
+    transition: 1s;
+    width: 130px;
+    height: 130px;
+} */
 
 .disable {
     pointer-events: none;
@@ -52,6 +82,7 @@ button {
 .form-container {
     display: flex;
     flex-direction: column;
+    justify-content: center;
     width: 300px;
     height: 300px;
 }
@@ -73,6 +104,13 @@ button {
 
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
+
+    font-family: 'Monoton', cursive;
+}
+
+.close {
+    transition: 0.5s;
+    height: 0px;
 }
 
 .player-one {
@@ -83,25 +121,46 @@ button {
     color: white;
 
     height: 75px;
+    font-size: 1.2rem;
 }
 
 .player-two {
+    flex: 1 1 auto;
     border-bottom-left-radius: 10px;
     height: 75px;
+    width: 150px;
+
+    font-size: 1.2rem;
+}
+
+.start,
+.reset {
+    border-radius: 15px;
+}
+
+.ai-button {
     width: 300px;
 }
 
 .ai {
+    flex: 1 1 0;
     border-bottom-right-radius: 10px;
     width: 150px;
     height: 75px;
+
+    font-size: 1.2rem;
+}
+
+.border-rad {
+    border-radius: 15px;
 }
 
 .form {
     background-color: rgb(118, 118, 118);
     display: flex;
-    padding: 20px;
-    height: 35px;
+    justify-content: space-around;
+    padding: 15px;
+    height: 45px;
 
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
@@ -109,11 +168,18 @@ button {
 
 .form-entry {
     border: none;
+    width: 175px;
+    border-radius: 15px;
+    padding-left: 10px;
+    font-size: 1.3rem;
 }
 
 .submit {
+    width: 60px;
     border: none;
     text-decoration: none;
+    border-radius: 15px;
+    font-size: 1.1rem;
 }
 
 .invisible {
