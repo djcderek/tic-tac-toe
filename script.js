@@ -24,6 +24,7 @@ const startBtn = (() => {
                 card.textContent = ''
             })
             playerOne.classList.toggle('border-rad')
+            playerOne.classList.toggle('turn')
             playerTwo.classList.toggle('border-rad')
 
             ai.classList.toggle('border-rad')
@@ -66,6 +67,14 @@ const gameBoard = (() => {
         })
     }
 
+    const playerOne = document.querySelector('.player-one')
+    const playerTwo = document.querySelector('.player-two')
+
+    const highlightPlayer = (currentPlayer) => {
+        playerOne.classList.toggle('turn')
+        playerTwo.classList.toggle('turn')
+    }
+
     const nudgeAI = () => {
         if (winner != true) {
             for (player in players) {
@@ -77,6 +86,7 @@ const gameBoard = (() => {
     }
 
     const run = (currentPlayer, position) => {
+        highlightPlayer(currentPlayer)
         updateArray(currentPlayer, position)
         displayArray()
         createNumArray(currentPlayer)
@@ -454,6 +464,8 @@ const displayWin = (() => {
 
 const resetBtn = (() => {
     const reset = document.querySelector('.reset')
+    const playerOne = document.querySelector('.player-one')
+    const playerTwo = document.querySelector('.player-two')
 
     reset.addEventListener('click', () => {
         const squares = document.querySelectorAll('.square')
@@ -488,6 +500,11 @@ const resetBtn = (() => {
             squares[i].style.color = 'white';
         }
 
+        if (playerTwo.classList.contains('turn')) {
+            console.log('hello')
+            playerTwo.classList.toggle('turn')
+            playerOne.classList.toggle('turn')
+        }
     })
     
     return {
