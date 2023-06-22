@@ -120,7 +120,7 @@ button {
 }
 
 .close {
-    transition: 0.5s;
+    transition: 1s;
     height: 0px;
     background-color: rgb(68, 55, 107)
 }

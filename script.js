@@ -6,6 +6,7 @@ const startBtn = (() => {
     const cardType = document.querySelectorAll('.type')
     const playerOne = document.querySelector('.player-one')
     const playerTwo = document.querySelector('.player-two')
+    const ai = document.querySelector('.ai')
     startBtnDom.addEventListener('click', () => {
         if (Object.keys(gameBoard.players).length === 2) {
             state.started = true
@@ -24,6 +25,8 @@ const startBtn = (() => {
             })
             playerOne.classList.toggle('border-rad')
             playerTwo.classList.toggle('border-rad')
+
+            ai.classList.toggle('border-rad')
         } else {
             alert('add players first')
         }
