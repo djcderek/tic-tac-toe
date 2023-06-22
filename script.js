@@ -18,7 +18,10 @@ const startBtn = (() => {
             startBtnDom.classList.toggle('invisible')
             resetBtn.reset.classList.toggle('invisible')
             vs.classList.toggle('invisible')
-            cardType.forEach(card => card.classList.toggle('close'))
+            cardType.forEach(card => {
+                card.classList.toggle('close')
+                card.textContent = ''
+            })
             playerOne.classList.toggle('border-rad')
             playerTwo.classList.toggle('border-rad')
         } else {
